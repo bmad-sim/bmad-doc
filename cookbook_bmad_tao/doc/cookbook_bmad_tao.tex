@@ -1,0 +1,414 @@
+%-----------------------------------------
+% Note: Use pdflatex to process this file.
+%
+% IMPORTANT: This file uses .aux files from the Bmad and Tao manuals so pdflatex these manuals beforehand.
+%            Note: It is assumed that the bmad, tao, and examples directories are all on the same level.
+%-----------------------------------------
+
+%\documentclass{article}
+\documentclass{hitec}     % Tutorial overall style
+
+\usepackage{index}
+\usepackage{xr}
+\usepackage{textgreek}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{moreverb}    % Defines {listing} environment.
+\usepackage{amsmath, amsthm, amssymb, amsbsy, mathtools}
+\usepackage{alltt}
+\usepackage{rotating}
+\usepackage{enumitem}
+\usepackage{subcaption}
+\usepackage{toc-dcs}    % See toc-dcs.sty file in this directory.
+\usepackage{xspace}
+%%\usepackage{makeidx}
+\usepackage[section]{placeins}   % For preventing floats from floating to end of chapter.
+\usepackage{longtable}  % For splitting long vertical tables into pieces
+\usepackage{multirow}
+\usepackage{booktabs}   % For table layouts
+\usepackage{yhmath}     % For widehat
+\usepackage{xcolor}      % Needed for listings package.
+\usepackage{listings}
+\usepackage[T1]{fontenc}   % so _, <, and > print correctly in text.
+\usepackage[strings]{underscore}    % to use "_" in text
+\usepackage[nottoc,numbib]{tocbibind}   % Makes "References" section show in table of contents
+\usepackage[pdftex,colorlinks=true,bookmarksnumbered=true]{hyperref}   % Must be last package!
+
+%----------------------------------------------------------------
+
+\input{macros.tex}
+
+% These are used with \extref
+
+\externaldocument[T-]{../../../tao/doc/command-list}
+\externaldocument[T-]{../../../tao/doc/data}
+\externaldocument[T-]{../../../tao/doc/initialization}
+\externaldocument[T-]{../../../tao/doc/wave}
+\externaldocument[T-]{../../../tao/doc/overview}
+\externaldocument[T-]{../../../tao/doc/optimization}
+\externaldocument[B-]{../../../bmad/doc/elements}
+\externaldocument[B-]{../../../bmad/doc/lattice-file}
+
+\renewcommand{\ttdefault}{txtt}
+%\lstset{basicstyle = \small\asciifamily,columns=flexible}  % Enable cut and paste
+\definecolor{backcolor}{rgb}{0.8824,1.0,1.0}   % To match code environment
+\lstset{basicstyle = \small, backgroundcolor=\color{backcolor}, escapeinside = {@!}{!@}}
+
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\topfraction}{1.0}
+\renewcommand{\bottomfraction}{1.0}
+
+\settextfraction{0.9}  % Width of text
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1ex}
+%\setlength{\textwidth}{6in}
+\newcommand{\Section}[1]{\section{#1}\vspace*{-1ex}}
+
+\newenvironment{display}
+  {\vspace*{-1.5ex} \begin{alltt}}
+  {\end{alltt} \vspace*{-1.0ex}}
+
+\title{Bmad and Tao Cookbook}
+\author{}
+\date{David Sagan \\ Nov. 1, 2020}
+\begin{document}
+\maketitle
+
+\cleardoublepage
+\phantomsection
+\pdfbookmark[1]{Contents}{Contents}
+\tableofcontents
+
+\newpage
+
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\Section{Orientation}
+\label{s:orient}
+
+\bmad is an open-source software library (aka toolkit) for simulating charged particles and X-rays.
+\tao is a program built atop \bmad for simulating charged particles and X-rays. \tao uses \bmad
+modules for doing such things particle tracking and Twiss calculations. \tao and \bmad started life
+at Cornell but have since been used at numerous laboratories around the world.
+
+In the beginning, the basic documentation for \bmad and \tao where their manuals which tended to be
+encyclopedic in nature since the manuals needed to be a complete reference. This was fine for people
+who were familiar with \bmad and \tao but it made it difficult for beginners learn the rudiments of
+how to use \bmad and \tao. To remedy this, a tutorial was developed which introduced the basic
+concepts. This still left a void which spurred the development of this guidebook. Neither reference
+manual nor tutorial, the \bmad and \tao Cookbook contains a potpourri of recipes, tips, and tricks
+and serves as a companion for people who already know the basics but are wondering how to mix all
+the ingredients together to solve simulation problems.
+
+It is assumed that you are more or less familiar with the material in the \bmad and \tao
+tutorial. At least you should be able to run \tao and construct simple lattices and be familiar with
+basic concepts like what is a \vn{Bmad Distribution}. 
+
+Access to all materials is via the \bmad web site at:
+\begin{display}
+  \url{\detokenize{www.classe.cornell.edu/bmad/}}
+\end{display}
+
+This Cookbook can be obtained online from the \bmad web site (along the manuals and tutorial for
+\bmad and \tao) at:
+\begin{display}
+  \url{\detokenize{www.classe.cornell.edu/bmad/}}
+\end{display}
+Also available for download are the lattice and other files needed to run the examples.
+
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\Section{X-Ray Crystal Rocking Curve}
+
+
+
+
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\Section{Converting a lattice with closed geometry to open}
+
+
+
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\Section{Correcting the Orbit when Radiation is Present}
+
+When radiation damping is simulated, the orbit that is flat when there is no radiation will show a
+``sawtooth" pattern'' in a plot of beam energy versus position. This will lead to a nonzero
+orbit. In an actual ring, the non-zero orbit will be compensated using steerings. Thus, to
+simulate the actual ring, compensating steerings should be added to the simulated lattice as well.
+
+This section
+shows how to calculate steering strengths using the \vn{Tao} simulation program.  If you are not
+familiar with \vn{Tao}, please see the ``Introduction and Tutorial to Bmad and Tao'' which can be
+accessed via the Bmad we page
+\begin{code}
+  https://www.classe.cornell.edu/bmad/tao.html
+\end{code}
+
+
+
+
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\Section{Lattice Geometry}
+\label{s:geometry}
+
+%------------------------------------------------------------------------------
+\subsection{Converting a Lattice From a Closed Geometry to an Open Geometry}
+\label{s:openit}
+
+
+
+<<<<<<<<<<<<<<<<<
+
+The \vn{geometry} of a lattice branch determines how orbits and Twiss parameters are computed. With
+a \vn{closed} geometry, the closed orbit is used as the reference orbit and the computed beta
+functions correspond to the periodic solution. If the lattice is \vn{open}, the orbit and beta
+functions are computed using the beginning orbit and beta functions as set in the lattice. Notice
+that this has nothing to do with whether or not the ends of the lattice branch actually meet in
+space or not.
+
+Sometimes it is convenient to treat a lattice that has a closed geometry as a lattice with an open
+geometry (or vice versa). When using the \tao program, the geometry can be changed on the fly using
+the \vn{set branch} command. For example
+\begin{code}
+Tao> set branch 0 geometry = open
+\end{code}
+This sets the root branch which has index 0. Here either the branch index or the branch name can
+be used to specify a branch.
+
+When the geometry is set open with the \tao \vn{set branch} command, the values of the beginning
+orbit and Twiss parameters remain at the values they had when the geometry was closed. Note: When
+saving a lattice with the \tao command \vn{write bmad}, the beginning orbit and Twiss parameters are
+always saved in the file (independent of the geometry). This can be convenient when constructing a
+new lattice file from the original lattice file. For example, a to change the geometry of a lattice
+without touching the original lattice file, create a new file with the lines:
+
+================
+
+Sometimes it is convenient to treat a lattice that has a closed geometry as a lattice with an open
+geometry. Using the \tao program this is very simple using the \vn{set branch} command
+\begin{code}
+Tao> set branch 0 geometry = open
+\end{code}
+Here it is assumed that your lattice has only one branch (the root branch with index 0). 
+
+If you want to save this lattice, use the \vn{write bmad} command. The lattice produced by the
+\vn{write bmad} command command always records the beginning Twiss and orbit parameters near the top
+of the file. [This is true independent of whether the geometry is open or closed. If the geometry is
+closed, the settings of these parameters are ignored in any calculation.] Due to file layout
+differences, it is sometimes convenient to use the beginning parameters with the original
+lattice file. This is simply done by creating a new file that looks like:
+
+>>>>>>>>>>>>>>>>>
+
+\begin{code}
+!! Load in the original file.
+call, file = original_lattice.bmad
+!! Set the geometry to open
+parameter[geometry] = Open
+!! Beginning parameters copied from file produced by "write bmad".
+beginning[beta_a]   = 0.95312905576387
+beginning[alpha_a]  = 0.013557298684906
+beginning[eta_x]    = -2.1234565330284E-3
+beginning[beta_b]   = 0.017777421110349
+beginning[alpha_b]  = -9.8678937496492E-3
+beginning[eta_y]    = 1.4430168984955E-3
+beginning[cmat_11]  = 1.0368253020203E-3
+beginning[cmat_12]  = -4.9140496679695E-4
+beginning[cmat_21]  = -0.092192270944055
+beginning[cmat_22]  = 9.9042780402708E-5
+particle_start[x]  = -1.662224577094E-5
+particle_start[px] = 2.3893354007669E-3
+\end{code}
+
+%------------------------------------------------------------------------------
+\subsection{Searching for Closed Geometry Lattice Differences}
+\label{s:closed.diff}
+
+Imagine you have two lattices which you believe should be the same but when you look at the orbit or
+the Twiss functions are not the same. How do you find where the difference is? If the lattices have an
+open geometry.
+
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\Section{Multiple Equilibrium Orbits}
+\label{s:mult.eq}
+
+If a lattice with a closed geometry is linear, it can be proved that there is at most one stable
+equilibrium orbit. For lattices with nonlinearities it is possible to have multipole equilibrium
+orbits. Light sources can be prone to this phenomenon due to the large sextupole strengths needed 
+to correct the chromaticity. 
+
+An example of this is given in the lattices:
+\begin{code}
+  stable1.bmad
+  stable2.bmad
+\end{code}
+These lattices come from a design study for a light source machine. The file stable2.bmad contains just
+the lines:
+\begin{code}
+call, file = stable1.bmad
+
+particle_start[x]  = 5.33E-5
+particle_start[px] = -1.30E-5
+particle_start[y]  = 2.58E-6
+particle_start[py] = -6.50E-6
+\end{code}
+So \vn{stable2.bmad} is the same as \vn{stable1.bmad} except \vn{particle_start} is different. This
+is important in this instance since \tao uses \vn{particle_start} as the initial guess for finding
+the closed orbit. Running \vn{stable1.bmad} in \tao gives the closed orbit
+\begin{code}
+Tao> show lat -orbit 
+# Values shown are for the Exit End of each Element:
+# Index  name    key          s         orbit         orbit         orbit         orbit
+#                                              x            px             y            py
+      1  SECT1   Marker      0.000  7.575177E-05 -1.958731E-04  9.729954E-04  1.794550E-04
+      2  D11     Drift       0.514 -2.502495E-05 -1.958731E-04  1.065325E-03  1.794550E-04
+      3  D11     Drift       1.029 -1.258017E-04 -1.958731E-04  1.157655E-03  1.794550E-04
+      4  D11     Drift       1.543 -2.265784E-04 -1.958731E-04  1.249984E-03  1.794550E-04
+      5  D11     Drift       2.058 -3.273551E-04 -1.958731E-04  1.342314E-03  1.794550E-04
+\end{code}
+The closed orbit computed for \vn{stable2.bmad} is:
+\begin{code}
+Tao> show lat -orbit 1:10
+# Values shown are for the Exit End of each Element:
+# Index  name    key             s         orbit         orbit         orbit         orbit
+#                                              x            px             y            py
+      1  SECT1   Marker      0.000  5.333071E-05 -1.306106E-05  2.584814E-06 -6.507237E-06
+      2  D11     Drift       0.514  4.661079E-05 -1.306106E-05 -7.631592E-07 -6.507237E-06
+      3  D11     Drift       1.029  3.989087E-05 -1.306106E-05 -4.111133E-06 -6.507237E-06
+      4  D11     Drift       1.543  3.317096E-05 -1.306106E-05 -7.459106E-06 -6.507237E-06
+      5  D11     Drift       2.058  2.645104E-05 -1.306106E-05 -1.080708E-05 -6.507237E-06
+\end{code}
+The Twiss functions are also markedly different. For example, the tunes are:
+\begin{code}
+  Lattice            Qa        Qb     
+  ------------    -------   -------
+  stable1.bamd    41.1472   19.8002
+  stable2.bmad    41.3919   20.3942  
+\end{code}
+
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\Section{Constructing a Chicane}
+\label{s:chicane}
+
+
+
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\Section{Programming With Bmad}
+\label{s:bmad.program}
+
+%------------------------------------------------------------------------------
+\subsection{Modifying the Lattice Reference Energy}
+
+Imagine the situation where you want to make a table of some property of the lattice as a function
+of the reference energy of the lattice. 
+
+Example: Looking at the spin resonance as a funtion of the reference energy
+
+\begin{code}
+program test
+
+use bmad
+
+implicit none
+
+type (lat_struct), target :: lat
+type (ele_struct), pointer :: ele0
+type (coord_struct), allocatable :: co(:)
+real(rp) e_tot, a_gamma, spin0(3)
+integer i, ie_arc
+
+!
+
+ie_arc = 1850   ! Arc element
+bmad_com%auto_bookkeeper = .false.
+bmad_com%radiation_damping_on = .true.
+bmad_com%spin_tracking_on = .true.
+
+spin0 = [0.0_rp, 1.0_rp, 0.0_rp]
+call bmad_parser ('lat.bmad', lat)
+ele0 => lat%ele(0)
+
+do i = -40, 0
+  a_gamma = 40.0_rp + i /1d3
+  e_tot = a_gamma * mass_of(electron$) / anomalous_moment_of(electron$)
+  ele0%value(E_tot$) = E_tot
+  call set_flags_for_changed_attribute (ele0, ele0%value(E_tot$))
+  call lattice_bookkeeper(lat)
+  call twiss_and_track(lat, co)
+  print '(es12.4, f10.4, f10.3, 5x, 3f12.6)', E_tot, a_gamma, &
+                          norm2(co(ie_arc)%spin - spin0), co(0)%vec(1)
+enddo
+
+end program
+\end{code}
+
+%------------------------------------------------------------------------------
+\subsection{Changed Lattice Detection}
+
+Suppose you have a program that takes lattice dependent quantities and, for say speed of execution
+next time the program is run, saves these quantities to a file. Next time the program is run, you
+want to know if the lattice has been modified between the time that the quantities were saved and
+the present. If the lattice has been modified, the program will need to recalculate the
+quantities. How can the program tell if there has been a modification?
+
+The answer is that the \vn{lat_struct} has a parameter \vn{lat%creation_hash} which is computed
+based on the modifiction dates of all the lattice files used to construct the lattice. Thus if this
+hash value is saved with the lattice dependent quantities, the saved value can be compared to the
+current value and if the values are different, a lattice file has been modified. 
+
+Note: This test is a bit too stringent since if lattice files are moved 
+
+
+
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\Section{Programming With PTC}
+\label{s:ptc.program}
+
+
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\Section{Programming With Tao}
+\label{s:tao.program}
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+At some point you may want to do something beyond the capabilities of \tao and other \bmad based
+programs. For example, 
+In this case you have the option of writing a new \bmad based program from the ground up
+or you can modify an existing program. 
+
+Two sources of information for creating \bmad based programs
+is the third section of the \bmad manual and the \bmad web site. In particular see the page:
+\begin{display}
+  \url{https://wiki.classe.cornell.edu/ACC/ACL/BuildSystem}
+\end{display}
+If you are interested in modifying \tao, further documentation can be found in the last section of 
+the \tao manual.
+
+
+At some point you might want to extend the capabilities of \tao. For example, to enable \tao to read
+in data that you have collected from an experiment or to interface \tao to the control system for
+your machine. 
+
+create your own simulation program based upon the \bmad library. This is a large subject and this
+section will just serve as a quick introduction on how to initially set things up. 
+
+Also if you want to create 
+
+Must use bash.
