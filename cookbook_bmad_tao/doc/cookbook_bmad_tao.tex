@@ -71,7 +71,11 @@
 \title{Bmad and Tao Cookbook}
 \author{}
 \date{David Sagan \\ Nov. 1, 2020}
+
 \begin{document}
+
+\phantomsection
+\pdfbookmark[1]{Cover Page}{Cover Page}
 \maketitle
 
 \cleardoublepage
@@ -118,15 +122,43 @@ Also available for download are the lattice and other files needed to run the ex
 
 %------------------------------------------------------------------------------
 %------------------------------------------------------------------------------
-\Section{X-Ray Crystal Rocking Curve}
+\Section{Converting a Lattice with Closed Geometry to Open}
 
+It is sometimes convenient to convert a lattice that has a \vn{closed} geometry to an equivalent lattice
+that has an \vn{open} geometry. For example, it may be desirable to vary the orbit at the start of the
+lattice to see how the orbit varies downstream. There are several ways of doing this. One way to do
+this is to use the \vn{slice_lattice} command in a lattice file. Example, given a closed geometry
+lattice defined in a file named, say, \vn{lat.bmad}, a second file to define the equivalant, open geometry
+lattice can be constructed in a few lines:
+\begin{code}
+call, file = lat.bmad ! Read in closed geometry lattice
+expand_lattice        ! Construct the lattice
+start_branch_at q20w  ! Optional: Used to shift lattice beginning point.
+slice_lattice *       ! Create open lattice.
+\end{code}
+The optional \vn{start_branch_at} command can be used to shift the starting point of the lattice.
+The \vn{slice_lattice} command is generally used to simplify the lattice by throwing away lattice
+elements. In this case, since ``\vn{*}'' matches to all elements, no elements are discarded and the
+effect of slice lattice is to set the geometry to \vn{open} and set the appropriate beginning orbit
+and Twiss parameters.
 
+When using \tao, the \vn{start_branch_at} and \vn{slice_lattice} commands do not have to be
+incorporated in a lattice file as these commands can be given on the startup command line so the
+following is equivalent to the above:
+\begin{code}
+tao -lat lat.bmad -start_branch_at q20w -slice_lattice "*"
+\end{code}
+Notice the use of quotation marks around "\vn{*}". This is needed since otherwise the Unix shell would
+match "\vn{*}" to all files in the default directory.
 
+Additionally, \tao's \vn{cut} command will convert the geometry from \vn{closed} to \vn{open} (and
+vice versa).
 
-%------------------------------------------------------------------------------
-%------------------------------------------------------------------------------
-\Section{Converting a lattice with closed geometry to open}
-
+Another alternative for converting from a \vn{closed} to an \vn{open} geometry is to startup \tao
+with the lattice with a \vn{closed} geometry and then use \tao's \vn{write bmad} to create a new
+lattice file. This new lattice will have encoded in it the initial orbit and Twiss parameters and it
+is a simple matter to edit this file to change the geometry to \vn{open} (only one line needs to be
+modified).
 
 
 %------------------------------------------------------------------------------
@@ -134,7 +166,7 @@ Also available for download are the lattice and other files needed to run the ex
 \Section{Correcting the Orbit when Radiation is Present}
 
 When radiation damping is simulated, the orbit that is flat when there is no radiation will show a
-``sawtooth" pattern'' in a plot of beam energy versus position. This will lead to a nonzero
+``sawtooth" pattern'' in a plot of beam energy versus position as shown in \fig{f:saw}. This will lead to a nonzero
 orbit. In an actual ring, the non-zero orbit will be compensated using steerings. Thus, to
 simulate the actual ring, compensating steerings should be added to the simulated lattice as well.
 
@@ -146,6 +178,8 @@ accessed via the Bmad we page
   https://www.classe.cornell.edu/bmad/tao.html
 \end{code}
 
+
+\startEditingHere...
 
 
 
@@ -295,7 +329,56 @@ The Twiss functions are also markedly different. For example, the tunes are:
 \Section{Constructing a Chicane}
 \label{s:chicane}
 
+\begin{figure}[tb]
+  \centering
+  \includegraphics[width=5in]{chicane.pdf}
+  \caption[Four bend chicane.]{Four bend chicane. A) Correctly implemented chicane. The red line is 
+the beam orbit magnified by a factor of 100. B) Incorrectly implemented chicane where the \vn{g}
+parameter of the bends is used to control the chicane strength instead of \vn{dg}.
+  }
+  \label{f:chicane}
+\end{figure}
 
+A \vn{chicane} is a series of bending magnets that shifts the beam trajectory in the transverse
+plane while keeping the starting and ending trajectories constant. Chicanes are useful for doing
+things like bunch compression or as a variable bunch time delay. An example four bend chicane is
+illustrated in \fig{f:chicane}A. The lattice file for this is:
+\begin{code}
+  parameter[geometry] = open
+  beginning[beta_a] = 20
+  beginning[beta_b] = 20
+  parameter[p0c] = 1e7
+
+  bnd1: rbend, l = 2
+  bnd2: rbend, l = 2
+  d1: drift, l = 3
+  d2: drift, l = 2
+
+  chicane: overlay = {bnd1[dg]:-ge, bnd2[dg]:ge}, var = {ge}, ge = 2e-3
+
+  c_line: line = (bnd1, d1, bnd2, d2, bnd2, d1, bnd1)
+  use, c_line
+\end{code}
+The chicane is controlled by an overlay (\sref{s:overlay}) called \vn{chicane}. This overlay controls
+the \vn{dg} attribute of the bends (alternatively the \vn{hkick} or \vn{b0} attributes could have
+been used).
+
+It is important to note that using \vn{g} instead of \vn{dg} to control the chicane strength
+would be a mistake. [Or, alternatively, \vn{b_field} instead of \vn{db_field} if controlling the
+unnormalized field.] This is illustrated in \fig{f:chicane}B where the chicane overlay was replaced
+by:
+\begin{code}
+  chicane: overlay = {bnd1[g]:-ge, bnd2[g]:ge}, var = {ge}, ge = 1e-1
+\end{code}
+The problem here is that \vn{g} sets the reference orbit so varying \vn{g} will vary the physical
+layout of the machine which is not what is wanted. Since the actual normalized field is \vn{g +
+dg}, it is \vn{dg} that should be varied. Notice that in the case where \vn{g} is varied, the
+bends are no longer rectangular. This is true since \vn{rbend} elements, when read in from the
+lattice file, are converted to \vn{sbend} elements. In this case the converted bends have \vn{e1}
+and \vn{e2} face angles of zero. When the \vn{chicane} overlay varies \vn{g}, the face angle remain
+zero. That is, the bends will always be pure sector bends. [In a situation where, indeed, \vn{g} is
+to be varied and it is desired to keep bends rectangular, the appropriate variation of the \vn{e1}
+and \vn{e2} can be put in the controlling overlay.]
 
 %------------------------------------------------------------------------------
 %------------------------------------------------------------------------------
@@ -376,6 +459,13 @@ Note: This test is a bit too stringent since if lattice files are moved
 %------------------------------------------------------------------------------
 \Section{Programming With Tao}
 \label{s:tao.program}
+
+
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\Section{X-Ray Crystal Rocking Curve}
+
+
 
 
 
