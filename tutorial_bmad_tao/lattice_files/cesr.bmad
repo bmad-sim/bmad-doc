@@ -6,7 +6,6 @@ parameter[geometry] = Closed
 parameter[p0c]                    = 5.2889999753148E9
 parameter[particle]               = Electron
 parameter[absolute_time_tracking]    = F
-bmad_com[auto_bookkeeper] = F
 
 beginning[beta_a]   = 0.95312905576387
 beginning[alpha_a]  = 0.013557298684906
